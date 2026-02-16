@@ -9,7 +9,7 @@ public class GridManager : MonoBehaviour
     //声明网格类型
     [SerializeField]private Tile wallTile,floorTile;
     //相机
-    [SerializeField] private Transform camera;
+    [SerializeField]private Camera camera;
 
     //管理网格的字典
     private Dictionary<Vector2, Tile> tiles;
@@ -45,6 +45,8 @@ public class GridManager : MonoBehaviour
                 }
                 #endregion
                 var spawnedTile = Instantiate(randomTile, new Vector3(x, y), Quaternion.identity);
+                spawnedTile.transform.SetParent(transform);
+
                 spawnedTile.name = $"Tile {x} {y}";
 
                 
@@ -54,7 +56,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        camera.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
+        camera.transform.position = new Vector3((float)width / 2 - 0.5f, (float)height / 2 - 0.5f, -10);
 
     }
 

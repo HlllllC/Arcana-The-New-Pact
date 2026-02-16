@@ -10,20 +10,20 @@ public class CameraController2D : MonoBehaviour
     public float moveSpeed = 15f;
     public Vector2 xBounds;
     public Vector2 yBounds;
-
+    public float smoothTime = 0.1f;
+    private float targetSize;
+    /*
     [Header("缩放设置")]
     public float zoomSpeed = 1f;
-    public float smoothTime = 0.1f;
     public float minSize = 3f;
     public float maxSize = 10f;
     public bool zoomToMouse = true;  // 是否以鼠标为中心缩放
+    // 平滑缩放变量
+    private float currentVelocity;
+    */
 
     [Header("相机设置")]
     public Camera targetCamera;
-
-    // 平滑缩放变量
-    private float targetSize;
-    private float currentVelocity;
 
     // 平滑移动变量
     private Vector3 moveVelocity;
@@ -40,7 +40,8 @@ public class CameraController2D : MonoBehaviour
     {
         if (targetCamera == null)
             targetCamera = Camera.main;
-        
+
+
         gridManager = FindObjectOfType<GridManager>();
         var width = gridManager.GetWidth();
         var height = gridManager.GetHeight();
@@ -50,13 +51,13 @@ public class CameraController2D : MonoBehaviour
 
         // 初始化目标值
         targetSize = targetCamera.orthographicSize;
-        targetPosition = new Vector3(width/2,height/2,transform.position.z);
+        targetPosition = new Vector3(0,0,transform.position.z);
     }
 
     void Update()
     {
         HandleMovement();
-        HandleZoom();
+        //HandleZoom();
     }
 
     void LateUpdate()
@@ -93,7 +94,7 @@ public class CameraController2D : MonoBehaviour
             ClampTargetPosition();
         }
     }
-
+    /*
     void HandleZoom()
     {
         float scroll = Input.GetAxis("Mouse ScrollWheel");
@@ -140,7 +141,7 @@ public class CameraController2D : MonoBehaviour
             smoothTime
         );
     }
-
+    */
     void ClampTargetPosition()
     {
         // 获取当前缩放级别下的有效边界
@@ -210,13 +211,13 @@ public class CameraController2D : MonoBehaviour
         GUIStyle style = new GUIStyle();
         style.fontSize = 16;
         style.normal.textColor = Color.white;
-
+        /*
         GUI.Label(
             new Rect(10, 10, 200, 30),
             $"Zoom: {targetCamera.orthographicSize:F1} / {maxSize:F1}",
             style
         );
-
+        */
         GUI.Label(
             new Rect(10, 40, 300, 30),
             $"Position: ({targetPosition.x:F1}, {targetPosition.y:F1})",

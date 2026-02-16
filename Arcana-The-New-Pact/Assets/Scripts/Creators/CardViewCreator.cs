@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CardViewCreator : MonoBehaviour
+public class CardViewCreator : GameManager<CardViewCreator>
 {
     [SerializeField] private CardView cardViewPrefab;
     public CardView CreateCardView(Vector3 position,Quaternion rotation)

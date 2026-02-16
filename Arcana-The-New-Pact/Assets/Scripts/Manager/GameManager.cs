@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR;
 
-public class GameManager : MonoBehaviour
+public abstract class GameManager<T> : MonoBehaviour where T:MonoBehaviour
 {
-
-    public static GameManager Instance;
+    public static T Instance {  get; private set; }
     public GameState GameState;
 
-
-    /*Awake()在脚本实例被加载时调用
-     * 比 Start() 执行更早
-     * 即使脚本组件未启用也会执行
-     * 用来写单例  */
-    private void Awake()
+    protected virtual void Awake()
     {
         //这句也是抄的
         if (Instance != null && Instance != this)
@@ -24,7 +18,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        Instance = this;
+        Instance = this as T;
     }
     void Start()
     {
@@ -60,6 +54,16 @@ public class GameManager : MonoBehaviour
         }
     }
 }
+
+public abstract class PersistentSingLeton<T>:GameManager<T> where T : MonoBehaviour
+{
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+}
+
 public enum GameState
 {
     GameMainInterface,//游戏主界面（未开始）

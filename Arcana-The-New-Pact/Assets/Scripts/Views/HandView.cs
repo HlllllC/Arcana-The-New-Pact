@@ -1,8 +1,9 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Splines;
-using DG.Tweening;
 
 public class HandView : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class HandView : MonoBehaviour
         yield return UpdateCardPositions(0.15f);
     }
 
-    private IEnumerator UpdateCardPositions(float duration)
+    public IEnumerator UpdateCardPositions(float duration)
     {
         if (cards.Count ==0)
         {
@@ -28,9 +29,9 @@ public class HandView : MonoBehaviour
         {
             float p = firstCardPosition+i*cardSpacing;
             Vector3 splinePostion = spline.EvaluatePosition(p);
-            Vector3 forward = spline.EvaluatePosition(p);
-            Vector3 up = spline.EvaluatePosition(p);
-            Quaternion rotation = Quaternion.LookRotation(-up,Vector3.Cross(-up,forward).normalized);
+            Vector3 forward = spline.EvaluateTangent(p);
+            Vector3 up = spline.EvaluateUpVector(p);
+            Quaternion rotation = Quaternion.LookRotation(-up,Vector3.Cross(up,forward).normalized);
             cards[i].transform.DOMove(splinePostion + transform.position + 0.01f * i * Vector3.back, duration);
             cards[i].transform.DORotate(rotation.eulerAngles, duration);
         }
